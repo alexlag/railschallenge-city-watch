@@ -4,13 +4,11 @@ class RespondersController < ApplicationController
   # GET /responders
   def index
     @responders = Responder.all
-    render formats: [:json]
   end
 
   # GET /responders/1
   def show
     @responder = Responder.find(params[:id])
-    render formats: [:json]
   end
 
   # POST /responders
@@ -18,7 +16,7 @@ class RespondersController < ApplicationController
     @responder = Responder.new(responder_params)
 
     if @responder.save
-      render :show, formats: [:json], status: :created, location: @responder
+      render :show, status: :created, location: @responder
     else
       render json: @responder.errors, status: :unprocessable_entity
     end
@@ -27,7 +25,7 @@ class RespondersController < ApplicationController
   # PATCH/PUT /responders/1
   def update
     if @responder.update(responder_params)
-      render :show, formats: [:json], status: :ok, location: @responder
+      render :show, status: :ok, location: @responder
     else
       render json: @responder.errors, status: :unprocessable_entity
     end

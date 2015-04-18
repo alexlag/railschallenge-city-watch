@@ -1,14 +1,13 @@
 class EmergenciesController < ApplicationController
   before_action :set_emergency, only: [:show, :update]
+
   # GET /emergencies
   def index
     @emergencies = Emergency.all
-    render formats: [:json]
   end
 
   # GET /emergencies/1
   def show
-    render formats: [:json]
   end
 
   # POST /emergencies
@@ -16,7 +15,7 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.new(emergency_params)
 
     if @emergency.save
-      render :show, formats: [:json], status: :created, location: @emergency
+      render :show, status: :created, location: @emergency
     else
       render json: @emergency.errors, status: :unprocessable_entity
     end
@@ -25,7 +24,7 @@ class EmergenciesController < ApplicationController
   # PATCH/PUT /emergencies/1
   def update
     if @emergency.update(emergency_params)
-      render :show, formats: [:json], status: :ok, location: @emergency
+      render :show, status: :ok, location: @emergency
     else
       render json: @emergency.errors, status: :unprocessable_entity
     end
