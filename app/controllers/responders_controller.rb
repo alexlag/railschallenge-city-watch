@@ -1,14 +1,19 @@
 class RespondersController < ApplicationController
-  before_action :set_responder, only: [:show, :update]
+  before_action :set_responder, only: [:show, :update, :destroy]
 
   # GET /responders
   def index
-    @responders = Responder.all
+    if params[:show] == 'capacity'
+      render :capacity
+    else
+      @responders = Responder.all
+      render :index
+    end
   end
 
   # GET /responders/1
   def show
-    @responder = Responder.find(params[:id])
+    render :show
   end
 
   # POST /responders
@@ -18,22 +23,21 @@ class RespondersController < ApplicationController
     if @responder.save
       render :show, status: :created, location: @responder
     else
-      render json: @responder.errors, status: :unprocessable_entity
+      render json: { message: @responder.errors }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /responders/1
   def update
-    if @responder.update(responder_params)
+    if @responder.update(update_responder_params)
       render :show, status: :ok, location: @responder
     else
-      render json: @responder.errors, status: :unprocessable_entity
+      render json: { message: @responder.errors }, status: :unprocessable_entity
     end
   end
 
   # DELETE /responders/1
   def destroy
-    @responder = Responder.find(params[:id])
     @responder.destroy
     head :no_content
   end
@@ -41,11 +45,16 @@ class RespondersController < ApplicationController
   private
 
   def set_responder
-    @responder = Responder.find(params[:id])
+    @responder = Responder.find_by_name(params[:id])
+    fail ActiveRecord::RecordNotFound if @responder.nil?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def responder_params
     params.require(:responder).permit(:type, :name, :capacity)
+  end
+
+  def update_responder_params
+    params.require(:responder).permit(:on_duty)
   end
 end

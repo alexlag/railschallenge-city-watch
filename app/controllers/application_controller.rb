@@ -1,13 +1,12 @@
 class ApplicationController < ActionController::API
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from ActionController::UnpermittedParameters, with: :unpermitted_parameter
 
-  def routing_error
-    render json: { message: 'page not found' }, status: 404
+  def unpermitted_parameter(exception)
+    render json: { message: exception.message }, status: :unprocessable_entity
   end
 
-  private
-
-  def record_not_found
-    render json: { message: 'page not found' }, status: 404
+  def not_found
+    render json: { message: 'page not found' }, status: :not_found
   end
 end
