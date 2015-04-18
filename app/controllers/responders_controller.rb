@@ -4,6 +4,7 @@ class RespondersController < ApplicationController
   # GET /responders
   def index
     if params[:show] == 'capacity'
+      @info = Responder.capacity_info
       render :capacity
     else
       @responders = Responder.all
