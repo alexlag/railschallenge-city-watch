@@ -22,9 +22,9 @@ The notes read:
      resources that can respond to emergencies.
   2. (35 points) Allow the creation of `emergencies`, which track their severity (i.e. how
      many fire, police, and medical resources we need per-emergency)
-  3. (35 points) Need to be able to see the capacity of the emergency reponders in the city,
+  3. (35 points) Need to be able to see the capacity of the emergency responders in the city,
 specifically:
-    * The total capacity of all reponders in the city, by type
+    * The total capacity of all responders in the city, by type
     * The total capacity of all "available" responders (not currently assigned
       to an emergency)
     * The total capacity of all "on-duty" responders, including those currently
@@ -49,8 +49,16 @@ specifically:
 
 **Senior Engineer:**
 > "Sorry, gotta go to the sprint planning meeting. Just take a look at the
-> `test/api` folder. I wrote up some integration tests for you so that, so long
-> as you cen get that stuff to pass, my apps should work fine with your API.
+> `test/api` folder. I wrote up some integration tests for you. As long
+> as you can get that stuff to pass, my apps should work fine with your API.
+> If you find anything that you think is a blatant bug in the spec please report it to
+> the [mailing list][2], or [the issue tracker][5], or if you're super confident
+> that you have a better way you can submit a [pull request][6]. I'll keep an
+> eye on all those channels and try to be as responsive as I can. With the
+> deadline we have coming up I can't promise to merge just any pull request,
+> but if it's small, focused, and doesn't majorly re-spec everything then
+> I'll at least consider it.
+>
 > Think you can handle it?"
 
 You nod hesitantly. Not like you have a choice one way or the other.
@@ -99,7 +107,7 @@ There are two components to scoring: automated scoring, and judge scoring.
 There are two components to the automated scoring: the test suite, and
 [rubocop][1].
 
-  * The test suite contains 51 tests, which contain **114 assertions**. For
+  * The test suite contains 50 tests, which contain **114 assertions**. For
     every assertion that passes, you will receive 1 point (for a maximum of 114
     points). **NOTE**: you only get points for the tests that come with this
     repository. You're free to add more tests as you develop at your
@@ -113,7 +121,7 @@ points) for a total score of ***111 points***. See if you can beat that on the
 automated scoring side!
 
 The [mailing list][3] the senior developer referenced is a real mailing list.
-When you run into questions or want clarification on portion of the challenge,
+When you run into questions or want clarification on a portion of the challenge,
 feel free to email there first. Someone from the **rails**challenge team will
 respond, acting as the (hopefully helpful) senior engineer in the scenario.
 
@@ -233,3 +241,5 @@ Use the net. Use the mailing list. Use StackOverflow. Whatever you want.
   [2]: https://github.com/railschallenge/railschallenge-city-watch/blob/master/.rubocop.yml
   [3]: https://groups.google.com/forum/#!forum/railschallenge
   [4]: https://github.com/railschallenge/railschallenge-city-watch/wiki
+  [5]: https://github.com/railschallenge/railschallenge-city-watch/issues
+  [6]: https://github.com/railschallenge/railschallenge-city-watch/pulls
