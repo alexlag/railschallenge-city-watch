@@ -4,6 +4,7 @@ class EmergenciesController < ApplicationController
   # GET /emergencies
   def index
     @emergencies = Emergency.all
+    @full_responses = Emergency.full_responses_info
     render :index
   end
 
@@ -16,7 +17,9 @@ class EmergenciesController < ApplicationController
   def create
     @emergency = Emergency.new(emergency_params)
 
-    if @emergency.save
+    if @emergency.valid?
+      @emergency.dispatch_and_save!
+
       render :show, status: :created, location: @emergency
     else
       render json: { message: @emergency.errors }, status: :unprocessable_entity
