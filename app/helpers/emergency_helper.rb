@@ -25,7 +25,7 @@ module EmergencyHelper
     def self.look_for(severity, responders = [])
       # Naive, O(2^n * n)
       # This is slow, but somewhat readable
-      TrivialDispatcher.look_for(severity, responders) ||
+      super ||
         candidates(responders)
           .map { |combination| diff(severity, combination) }
           .reject { |x| x[:diff] < 0 }
