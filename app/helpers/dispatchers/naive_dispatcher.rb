@@ -4,12 +4,16 @@ class NaiveDispatcher < TrivialDispatcher
     # Try trivial first
     super
     rescue NoDispatchError
-      # This is slow, but somewhat readable
-      candidates(responders)
-        .map { |combination| diff(severity, combination) }
-        .reject { |x| x[:diff] < 0 }
-        .sort { |x, y| x[:diff] <=> y[:diff] }
-        .first[:combination]
+      naive_look_for(severity, responders)
+  end
+
+  def self.naive_look_for(severity, responders)
+    # This is slow, but somewhat readable
+    candidates(responders)
+      .map { |combination| diff(severity, combination) }
+      .reject { |x| x[:diff] < 0 }
+      .sort { |x, y| x[:diff] <=> y[:diff] }
+      .first[:combination]
     rescue
       raise NoDispatchError
   end

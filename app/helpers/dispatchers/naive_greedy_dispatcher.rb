@@ -4,10 +4,14 @@ class NaiveGreedyDispatcher < TrivialDispatcher
     # Try trivial first
     super
     rescue NoDispatchError
-      # This is a bit faster than Naive, but not optimal
-      candidates(responders)
-        .map { |combination| diff(severity, combination) }
-        .find { |computed| computed[:diff] >= 0 }[:combination]
+      naive_greedy_look_for(severity, responders)
+  end
+
+  def self.naive_greedy_look_for(severity, responders)
+    # This is a bit faster than Naive, but not optimal
+    candidates(responders)
+      .map { |combination| diff(severity, combination) }
+      .find { |computed| computed[:diff] >= 0 }[:combination]
     rescue
       raise NoDispatchError
   end
