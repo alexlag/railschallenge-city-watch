@@ -1,10 +1,9 @@
 class Emergency < ActiveRecord::Base
-  include EmergencyHelper
-  SEVERITY_TYPES = %w(Fire Police Medical)
+  SEVERITY_TYPES = %w(fire police medical)
 
   validates :code, presence: true, uniqueness: true
 
-  SEVERITY_TYPES.map(&:downcase).each do |type|
+  SEVERITY_TYPES.each do |type|
     validates "#{type}_severity", presence: true, numericality: { greater_than_or_equal_to: 0 }
   end
 
@@ -22,7 +21,7 @@ class Emergency < ActiveRecord::Base
 
   def dispatch_and_save!
     responders << SEVERITY_TYPES.flat_map do |type|
-      NaiveDispatcher.look_for(send("#{type.downcase}_severity"), Responder.to(type).available_on_duty)
+      EmergencyHelper.look_for_responders(send("#{type}_severity"), type.capitalize)
     end
 
     save!
@@ -32,7 +31,7 @@ class Emergency < ActiveRecord::Base
 
   def full_response?
     SEVERITY_TYPES.all? do |type|
-      responders.to(type).sum_capacity == send("#{type.downcase}_severity")
+      responders.to(type.capitalize).sum_capacity == send("#{type}_severity")
     end
   end
 

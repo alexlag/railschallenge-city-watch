@@ -16,5 +16,7 @@ module CityWatch
     config.action_controller.action_on_unpermitted_parameters = :raise
     # Custom responer models
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'responders')]
+    # Dispatchers
+    config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'dispatchers')]
   end
 end
