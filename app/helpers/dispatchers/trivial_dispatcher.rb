@@ -9,7 +9,8 @@ class TrivialDispatcher
 
     # Trivial: total capacity <= severity
     return responders if sum_capacity(responders) <= severity
-    nil
+
+    fail NoDispatchError
   end
 
   # A bit of copy-paste
