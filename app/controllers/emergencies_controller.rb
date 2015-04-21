@@ -1,19 +1,16 @@
 class EmergenciesController < ApplicationController
   before_action :set_emergency, only: [:show, :update, :destroy]
 
-  # GET /emergencies
   def index
     @emergencies = Emergency.all
     @full_responses = Emergency.full_responses_info
     render :index
   end
 
-  # GET /emergencies/1
   def show
     render :show
   end
 
-  # POST /emergencies
   def create
     @emergency = Emergency.new(emergency_params)
 
@@ -26,16 +23,14 @@ class EmergenciesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /emergencies/1
   def update
-    if @emergency.update(update_emergency_params)
+    if @emergency.clean_and_update(update_emergency_params)
       render :show, status: :ok, location: @emergency
     else
       render json: { message: @emergency.errors }, status: :unprocessable_entity
     end
   end
 
-  # DELETE /emergencies/1
   def destroy
     @emergency.destroy
     head :no_content

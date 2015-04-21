@@ -1,7 +1,6 @@
 class RespondersController < ApplicationController
   before_action :set_responder, only: [:show, :update, :destroy]
 
-  # GET /responders
   def index
     if params[:show] == 'capacity'
       @info = Responder.capacity_info
@@ -12,12 +11,10 @@ class RespondersController < ApplicationController
     end
   end
 
-  # GET /responders/1
   def show
     render :show
   end
 
-  # POST /responders
   def create
     @responder = Responder.new(responder_params)
 
@@ -28,7 +25,6 @@ class RespondersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /responders/1
   def update
     if @responder.update(update_responder_params)
       render :show, status: :ok, location: @responder
@@ -37,7 +33,6 @@ class RespondersController < ApplicationController
     end
   end
 
-  # DELETE /responders/1
   def destroy
     @responder.destroy
     head :no_content

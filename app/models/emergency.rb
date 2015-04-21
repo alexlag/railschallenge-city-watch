@@ -9,11 +9,7 @@ class Emergency < ActiveRecord::Base
 
   has_many :responders, foreign_key: :emergency_code, primary_key: :code, dependent: :nullify
 
-  before_save :free_responders
-
-  def self.full_responses
-    where(full_response: true)
-  end
+  scope :full_responses, -> { where(full_response: true) }
 
   def self.full_responses_info
     [full_responses.count, all.count]
@@ -21,12 +17,17 @@ class Emergency < ActiveRecord::Base
 
   def dispatch_and_save!
     responders << SEVERITY_TYPES.flat_map do |type|
-      EmergencyHelper.look_for_responders(send("#{type}_severity"), type.capitalize)
+      look_for_responders(send("#{type}_severity"), type.capitalize)
     end
 
     save!
     self.full_response = full_response?
     save!
+  end
+
+  def clean_and_update(params)
+    params[:responders] = [] if params[:resolved_at]
+    update(params)
   end
 
   def full_response?
@@ -37,7 +38,13 @@ class Emergency < ActiveRecord::Base
 
   private
 
-  def free_responders
-    self.responders = [] if resolved_at
+  def look_for_responders(severity, type)
+    responders = Responder.to(type).available_on_duty
+    return Responder.none if responders.empty?
+
+    # Pick desired dispatcher
+    Dispatcher::Naive.look_for(severity, responders)
+    rescue Dispatcher::NoDispatchError
+      Responder.none
   end
 end

@@ -26,8 +26,8 @@ class Responder < ActiveRecord::Base
   # Makes array of metrics for given type
   def self.capacity_info_for(type)
     if type
-      f = to(type)
-      [f, f.available, f.on_duty, f.available_on_duty].map(&:sum_capacity)
+      typed = Responder.to(type)
+      [typed, typed.available, typed.on_duty, typed.available_on_duty].map(&:sum_capacity)
     end
   end
 
