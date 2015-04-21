@@ -19,11 +19,4 @@ class NaiveGreedyDispatcher < TrivialDispatcher
     (1..responders.size)
       .flat_map { |n| responders.combination(n).to_a }
   end
-
-  def self.diff(severity, responders = [])
-    {
-      diff: sum_capacity(responders) - severity,
-      combination: responders
-    }
-  end
 end
