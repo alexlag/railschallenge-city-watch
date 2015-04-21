@@ -5,7 +5,7 @@ class CreateEmergencies < ActiveRecord::Migration
       t.integer :fire_severity
       t.integer :police_severity
       t.integer :medical_severity
-      t.timestamp :resolved_at, default: nil
+      t.timestamp :resolved_at, index: true, default: nil
 
       t.timestamps null: false
     end

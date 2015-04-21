@@ -12,7 +12,7 @@ class Emergency < ActiveRecord::Base
   before_save :free_responders
 
   def self.full_responses
-    all.select { |emergency| emergency if emergency.full_response }
+    where(full_response: true)
   end
 
   def self.full_responses_info

@@ -25,15 +25,21 @@ ActiveRecord::Schema.define(version: 20150419104120) do
   end
 
   add_index "emergencies", ["code"], name: "index_emergencies_on_code"
+  add_index "emergencies", ["resolved_at"], name: "index_emergencies_on_resolved_at"
 
   create_table "responders", force: :cascade do |t|
     t.string   "emergency_code"
-    t.string   "type"
-    t.string   "name"
-    t.integer  "capacity"
+    t.string   "type",                           null: false
+    t.string   "name",                           null: false
+    t.integer  "capacity",                       null: false
     t.boolean  "on_duty",        default: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
   end
+
+  add_index "responders", ["emergency_code"], name: "index_responders_on_emergency_code"
+  add_index "responders", ["name"], name: "index_responders_on_name"
+  add_index "responders", ["on_duty"], name: "index_responders_on_on_duty"
+  add_index "responders", ["type"], name: "index_responders_on_type"
 
 end
