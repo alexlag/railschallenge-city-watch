@@ -32,7 +32,7 @@ class Emergency < ActiveRecord::Base
 
   def full_response?
     SEVERITY_TYPES.all? do |type|
-      responders.to(type.capitalize).sum_capacity == send("#{type}_severity")
+      responders.to(type.capitalize).sum_capacity >= send("#{type}_severity")
     end
   end
 
