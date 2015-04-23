@@ -1,5 +1,6 @@
 class Emergency < ActiveRecord::Base
   # Severity related fields are extracted from migration assignements
+  # like ['fire_severity', 'medical_severity', 'police_severity']
   SEVERITY_FIELDS = column_names.select { |col| col.ends_with?('severity') }
 
   validates(*SEVERITY_FIELDS, presence: true, numericality: { greater_than_or_equal_to: 0 })
