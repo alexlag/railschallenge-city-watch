@@ -1,12 +1,11 @@
 class EmergenciesController < ApplicationController
-  before_action :set_emergency, only: [:show, :update, :destroy]
-
   def index
     @emergencies = Emergency.all
     @full_responses = Emergency.full_responses_info
   end
 
   def show
+    @emergency = Emergency.find_by_code!(params[:id])
   end
 
   def create
@@ -22,6 +21,7 @@ class EmergenciesController < ApplicationController
   end
 
   def update
+    @emergency = Emergency.find_by_code!(params[:id])
     if @emergency.clean_and_update(update_emergency_params)
       render :show, status: :ok, location: @emergency
     else
@@ -30,16 +30,12 @@ class EmergenciesController < ApplicationController
   end
 
   def destroy
+    @emergency = Emergency.find_by_code!(params[:id])
     @emergency.destroy
     head :no_content
   end
 
   private
-
-  def set_emergency
-    @emergency = Emergency.find_by_code(params[:id])
-    fail ActiveRecord::RecordNotFound if @emergency.nil?
-  end
 
   def emergency_params
     params.require(:emergency).permit(:code, *Emergency::SEVERITY_FIELDS)
