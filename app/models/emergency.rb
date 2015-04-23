@@ -1,10 +1,11 @@
 class Emergency < ActiveRecord::Base
-  SEVERITY_TYPES = %w(fire police medical)
+  # Severity related fields are extracted from migration assignements
+  SEVERITY_FIELDS = column_names.select { |col| col.ends_with?('severity') }
 
   validates :code, presence: true, uniqueness: true
 
-  SEVERITY_TYPES.each do |type|
-    validates "#{type}_severity", presence: true, numericality: { greater_than_or_equal_to: 0 }
+  SEVERITY_FIELDS.each do |field|
+    validates field, presence: true, numericality: { greater_than_or_equal_to: 0 }
   end
 
   has_many :responders, dependent: :nullify
@@ -16,8 +17,9 @@ class Emergency < ActiveRecord::Base
   end
 
   def dispatch_and_save!
-    responders << SEVERITY_TYPES.flat_map do |type|
-      look_for_responders(send("#{type}_severity"), type.capitalize)
+    responders << SEVERITY_FIELDS.flat_map do |field|
+      type = field.split('_').first.capitalize
+      look_for_responders(attributes[field], type)
     end
 
     save!
@@ -31,8 +33,9 @@ class Emergency < ActiveRecord::Base
   end
 
   def full_response?
-    SEVERITY_TYPES.all? do |type|
-      responders.to(type.capitalize).sum_capacity >= send("#{type}_severity")
+    SEVERITY_FIELDS.all? do |field|
+      type = field.split('_').first.capitalize
+      responders.to(type).sum_capacity >= attributes[field]
     end
   end
 
