@@ -14,17 +14,20 @@ class Responder < ActiveRecord::Base
   scope :on_duty, -> { where(on_duty: true) }
   scope :available_on_duty, -> { available.on_duty }
 
-  # Array of types in system
+  # @return [Array] Types in the system
   def self.types
     uniq.pluck(:type)
   end
 
-  # Summarizes capacity in scope
+  # @return [Fixnum] Sum of capacities in scope
   def self.sum_capacity
     pluck(:capacity).reduce(0, :+)
   end
 
   # Makes array of metrics for given type
+  #
+  # @param [String] type one of types in the system
+  # @return [Array] Numbers of responders according to specs
   def self.capacity_info_for(type)
     if type
       typed = Responder.to(type)
@@ -33,6 +36,8 @@ class Responder < ActiveRecord::Base
   end
 
   # Gathers capacity information for each type in system
+  #
+  # @return [Hash] Responder information for each type
   def self.capacity_info
     types.each_with_object({}) do |type, result|
       result[type] = capacity_info_for(type)
