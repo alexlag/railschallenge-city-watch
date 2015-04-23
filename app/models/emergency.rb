@@ -2,11 +2,9 @@ class Emergency < ActiveRecord::Base
   # Severity related fields are extracted from migration assignements
   SEVERITY_FIELDS = column_names.select { |col| col.ends_with?('severity') }
 
-  validates :code, presence: true, uniqueness: true
+  validates(*SEVERITY_FIELDS, presence: true, numericality: { greater_than_or_equal_to: 0 })
 
-  SEVERITY_FIELDS.each do |field|
-    validates field, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  end
+  validates :code, presence: true, uniqueness: true
 
   has_many :responders, dependent: :nullify
 
