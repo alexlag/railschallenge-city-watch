@@ -6,10 +6,11 @@ class Responder < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :capacity, presence: true, inclusion: { in: (1..5) }
 
-  belongs_to :emergency, foreign_key: :emergency_code, primary_key: :code
+  belongs_to :emergency
+  delegate :code, to: :emergency, allow_nil: true, prefix: true
 
   scope :to, ->(type) { where(type: type) }
-  scope :available, -> { where(emergency_code: nil) }
+  scope :available, -> { where(emergency_id: nil) }
   scope :on_duty, -> { where(on_duty: true) }
   scope :available_on_duty, -> { available.on_duty }
 

@@ -7,7 +7,7 @@ class Emergency < ActiveRecord::Base
     validates "#{type}_severity", presence: true, numericality: { greater_than_or_equal_to: 0 }
   end
 
-  has_many :responders, foreign_key: :emergency_code, primary_key: :code, dependent: :nullify
+  has_many :responders, dependent: :nullify
 
   scope :full_responses, -> { where(full_response: true) }
 
