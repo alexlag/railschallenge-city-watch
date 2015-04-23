@@ -20,8 +20,4 @@ module Dispatcher
       responders.map(&:capacity).reduce(0, :+)
     end
   end
-
-  class NoDispatchError < StandardError
-    # Raised if dispatcher failed
-  end
 end

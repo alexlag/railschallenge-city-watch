@@ -40,11 +40,11 @@ class Emergency < ActiveRecord::Base
 
   def look_for_responders(severity, type)
     responders = Responder.to(type).available_on_duty
-    return Responder.none if responders.empty?
+    return [] if responders.empty?
 
     # Pick desired dispatcher
     Dispatcher::Naive.look_for(severity, responders)
     rescue Dispatcher::NoDispatchError
-      Responder.none
+      []
   end
 end

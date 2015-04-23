@@ -7,12 +7,10 @@ class RespondersController < ApplicationController
       render :capacity
     else
       @responders = Responder.all
-      render :index
     end
   end
 
   def show
-    render :show
   end
 
   def create
@@ -45,7 +43,6 @@ class RespondersController < ApplicationController
     fail ActiveRecord::RecordNotFound if @responder.nil?
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def responder_params
     params.require(:responder).permit(:type, :name, :capacity)
   end

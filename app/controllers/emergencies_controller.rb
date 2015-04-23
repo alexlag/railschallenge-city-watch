@@ -4,11 +4,9 @@ class EmergenciesController < ApplicationController
   def index
     @emergencies = Emergency.all
     @full_responses = Emergency.full_responses_info
-    render :index
   end
 
   def show
-    render :show
   end
 
   def create
@@ -43,7 +41,6 @@ class EmergenciesController < ApplicationController
     fail ActiveRecord::RecordNotFound if @emergency.nil?
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def emergency_params
     params.require(:emergency).permit(:code, :fire_severity, :police_severity, :medical_severity)
   end
