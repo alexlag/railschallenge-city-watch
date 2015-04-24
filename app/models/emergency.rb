@@ -25,7 +25,7 @@ class Emergency < ActiveRecord::Base
   # @return [Emergency] Dispatched and saved to DB emergency
   def dispatch_and_save!
     responders << SEVERITY_FIELDS.flat_map do |field|
-      type = field.split('_').first.capitalize
+      type = get_type_from(field)
       look_for_responders(attributes[field], type)
     end
 
@@ -48,7 +48,7 @@ class Emergency < ActiveRecord::Base
   # @return [Boolean]
   def full_response?
     SEVERITY_FIELDS.all? do |field|
-      type = field.split('_').first.capitalize
+      type = get_type_from(field)
       responders.to(type).sum_capacity >= attributes[field]
     end
   end
@@ -68,5 +68,14 @@ class Emergency < ActiveRecord::Base
     Dispatcher::Naive.look_for(severity, responders)
     rescue Dispatcher::NoDispatchError
       []
+  end
+
+  # Converts severity column name to type used in responders
+  #   'fire_severity' -> 'Fire'
+  #
+  # @param [String] field severity field name
+  # @return [String] capitalized type
+  def get_type_from(field)
+    field.split('_').first.capitalize
   end
 end
