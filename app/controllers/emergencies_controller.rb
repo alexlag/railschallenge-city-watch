@@ -5,7 +5,7 @@ class EmergenciesController < ApplicationController
   end
 
   def show
-    @emergency = Emergency.find_by_code!(params[:id])
+    @emergency = Emergency.find_by_code!(params[:code])
   end
 
   def create
@@ -21,7 +21,7 @@ class EmergenciesController < ApplicationController
   end
 
   def update
-    @emergency = Emergency.find_by_code!(params[:id])
+    @emergency = Emergency.find_by_code!(params[:code])
     if @emergency.clean_and_update(update_emergency_params)
       render :show, status: :ok, location: @emergency
     else
@@ -30,7 +30,7 @@ class EmergenciesController < ApplicationController
   end
 
   def destroy
-    @emergency = Emergency.find_by_code!(params[:id])
+    @emergency = Emergency.find_by_code!(params[:code])
     @emergency.destroy
     head :no_content
   end

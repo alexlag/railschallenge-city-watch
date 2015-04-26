@@ -9,7 +9,7 @@ class RespondersController < ApplicationController
   end
 
   def show
-    @responder = Responder.find_by_name!(params[:id])
+    @responder = Responder.find_by_name!(params[:name])
   end
 
   def create
@@ -23,7 +23,7 @@ class RespondersController < ApplicationController
   end
 
   def update
-    @responder = Responder.find_by_name!(params[:id])
+    @responder = Responder.find_by_name!(params[:name])
     if @responder.update(update_responder_params)
       render :show, status: :ok, location: @responder
     else
@@ -32,7 +32,7 @@ class RespondersController < ApplicationController
   end
 
   def destroy
-    @responder = Responder.find_by_name!(params[:id])
+    @responder = Responder.find_by_name!(params[:name])
     @responder.destroy
     head :no_content
   end
